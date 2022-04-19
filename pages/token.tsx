@@ -1,5 +1,4 @@
 import { GetServerSideProps, NextPage } from 'next';
-import { route } from 'next/dist/server/router';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useContext } from '../src/Context';
@@ -10,7 +9,12 @@ type TokenPageProps = {
 };
 
 const Token: NextPage<TokenPageProps> = ({ accessToken }) => {
-  const { dispatch } = useContext();
+  const {
+    context: {
+      auth: { token }
+    },
+    dispatch
+  } = useContext();
   const router = useRouter();
   useEffect(() => {
     if (accessToken) {
@@ -18,15 +22,17 @@ const Token: NextPage<TokenPageProps> = ({ accessToken }) => {
       const getUser = async () => {
         const userResponse = await Service.getProfile(accessToken);
         if (userResponse) {
-          console.log(userResponse);
           const authObject = { token: accessToken, userId: userResponse.id, userName: userResponse.display_name };
           dispatch({ type: 'auth', payload: authObject });
         }
       };
       getUser();
-      router.push('/playing');
     }
-  }, [accessToken, router, dispatch]);
+  }, [accessToken, dispatch]);
+
+  useEffect(() => {
+    if (token) router.push('/playing');
+  }, [token, router]);
 
   return null;
 };

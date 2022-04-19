@@ -1,0 +1,11 @@
+.song {
+  display: flex;
+}
+
+.song div:first-of-type {
+  width: 80%;
+}
+
+.song div:last-of-type {
+  align-self: center;
+}

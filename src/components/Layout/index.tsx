@@ -1,12 +1,10 @@
-// import Navbar from './navbar';
-// import Footer from './footer';
-
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import Navbar from './components/Navbar';
-import { useContext } from './Context';
-import Service from './Service';
+import { useEffect } from 'react';
+import Navbar from '../Navbar';
+import { initialState, useContext } from '../../Context';
+import Service from '../../Service';
+import styles from './layout.module.css';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -14,12 +12,13 @@ type LayoutProps = {
 
 export default function Layout({ children }: LayoutProps) {
   const router = useRouter();
+  const { context, dispatch } = useContext();
+
   const {
-    context: {
-      auth: { token }
-    },
-    dispatch
-  } = useContext();
+    auth: { token }
+  } = context;
+
+  console.log(context);
 
   useEffect(() => {
     if (!token) {
@@ -34,18 +33,22 @@ export default function Layout({ children }: LayoutProps) {
               dispatch({ type: 'initList', payload: JSON.parse(playlistsStorage) });
             }
             dispatch({ type: 'auth', payload: authObject });
-          } else router.push('/login');
+          } else {
+            console.log('***redirect from layout no userResponse');
+            router.push('/login');
+          }
         };
         getUser();
       }
     }
-  }, [token, dispatch]);
+  }, [token, dispatch, router]);
 
   const handleLogOut = () => {
     localStorage.removeItem('token');
-    dispatch({ type: 'auth', payload: { token: '', userId: '', userName: '' } });
+    dispatch({ type: 'logout', payload: initialState });
     router.push('/login');
   };
+
   // TODO try app in axe/wave for a11y
 
   // TODO add to readme: convert layout to class/errorBoundary
@@ -56,7 +59,7 @@ export default function Layout({ children }: LayoutProps) {
         <title>Lev + Spotify playlist manager</title>
       </Head>
       <Navbar loggedIn={!!token} logOut={handleLogOut} />
-      <main>{children}</main>
+      <main className={styles.main}>{children}</main>
     </>
   );
 }

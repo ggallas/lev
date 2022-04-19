@@ -1,7 +1,6 @@
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useContext } from '../src/Context';
-import styles from '../styles/Home.module.css';
 
 const Home: NextPage = () => {
   const {
@@ -23,7 +22,9 @@ const Home: NextPage = () => {
         In this application you will be able to view the song you are currently playing, create, modify and remove
         playlists
       </p>
-      <button onClick={onClickHandler}>Get started!</button>
+      <button onClick={onClickHandler} style={{ marginTop: '1rem' }}>
+        Get started!
+      </button>
     </div>
   );
 };

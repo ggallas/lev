@@ -1,4 +1,5 @@
-import { ArtistType, SongType } from '../types';
+import { ArtistType, SongType } from '../../types';
+import styles from './song.module.css';
 
 type SongComponentProps = {
   variant?: 'list' | 'playing';
@@ -16,13 +17,10 @@ const Song = ({ variant = 'list', song, onClick }: SongComponentProps) => {
       } else artistString += `${artists[i].name} & `;
     }
     return (
-      <div>
+      <div className={styles.song}>
         <div>
-          <p>
-            {song.artists?.length > 1 ? 'Artists: ' : 'Artist: '}
-            {artistString}
-          </p>
-          <p>Song name: {song.name}</p>
+          <p>{song.artists?.length > 1 ? `Artists: ${artistString}` : `Artist: ${artistString}`}</p>
+          <p>{`Song name: ${song.name}`}</p>
         </div>
         <div>
           <button onClick={onClick}>Remove</button>

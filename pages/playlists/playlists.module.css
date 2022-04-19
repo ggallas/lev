@@ -1,0 +1,29 @@
+.playlists li {
+  margin: 1rem 0;
+}
+
+.playlistsItemContainer {
+  display: flex;
+  /* justify-content: space-evenly; */
+  align-items: baseline;
+}
+
+.playlistsName {
+  width: 80%;
+}
+
+.playlists button {
+  margin-top: 1rem;
+}
+
+.playlist li {
+  border: 1px solid grey;
+  border-bottom: none;
+}
+.playlist li:last-of-type {
+  border-bottom: 1px solid grey;
+}
+
+.playlist button {
+  margin-top: 1rem;
+}

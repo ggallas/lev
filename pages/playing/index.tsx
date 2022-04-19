@@ -1,11 +1,13 @@
 import type { NextPage } from 'next';
 
 import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from 'react';
-import Service from '../src/Service';
-import { PlaylistType, SongType } from '../src/types';
-import { useContext } from '../src/Context';
-import { useInputHook } from '../src/customHooks';
-import Song from '../src/components/Song';
+import Service from '../../src/Service';
+import { PlaylistType, SongType } from '../../src/types';
+import { useContext } from '../../src/Context';
+import { useInputHook } from '../../src/customHooks';
+import Song from '../../src/components/Song';
+import { useRouter } from 'next/router';
+import styles from './playing.module.css';
 
 const initialState: SongType = {
   name: '',
@@ -23,12 +25,13 @@ const Playing: NextPage = () => {
   } = useContext();
   const [song, setSong] = useState<SongType>(initialState);
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const [selectedPlaylist, setSelectedPlaylist] = useState('');
+  const router = useRouter();
 
   const validation = (input: string) => {
-    const clientPattern = /^[A-Za-z0-9]+$/;
+    const clientPattern = /^[\w\-\s]+$/;
     const validateLength = input.length > 0 && input.length <= 20;
     return validateLength && clientPattern.test(input);
   };
@@ -65,8 +68,10 @@ const Playing: NextPage = () => {
   }, [countdown, song, getCurrentSong]);
 
   useEffect(() => {
-    if (token && song === initialState) getCurrentSong();
-  }, [getCurrentSong, song, token]);
+    if (token) {
+      getCurrentSong();
+    }
+  }, [getCurrentSong, token, router]);
 
   const handleAddSongNewPlaylist = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -85,33 +90,33 @@ const Playing: NextPage = () => {
   };
 
   return error ? (
-    <div>Something went wrong..</div>
+    <div>You are not playing any song.. Play a song and refresh browser!</div>
   ) : loading ? (
     <p>Loading..</p>
   ) : (
     <div>
       <Song variant="playing" song={song} />
-      <div>
+      <div className={styles.inputContainer}>
         <form onSubmit={handleAddSongNewPlaylist}>
           <div>
             <input
-              name="new-playlist"
+              aria-label="new-playlist"
               placeholder="Create new Playlist"
               onChange={event => handlePlaylistInputChange(event)}
               value={playlistInput}
             />
             {playlistInputError && <p>Invalid input, only alphanumerical and maxiumum 20 characters</p>}
-            <button type="submit" disabled={playlistInputError}>
+            <button type="submit" disabled={playlistInputError || playlistInput.length === 0}>
               Add song to new playlist
             </button>
           </div>
         </form>
       </div>
       {playlists.length > 0 && (
-        <div>
+        <div className={styles.selectContainer}>
           <form onSubmit={handleAddSong}>
-            <select name="add-song" onChange={handlePlaylistSelect} value={selectedPlaylist}>
-              <option hidden>{` -- select an option -- `}</option>
+            <select aria-label="add-song" onChange={handlePlaylistSelect} value={selectedPlaylist}>
+              <option hidden>{` -- Select an option -- `}</option>
               {playlists.map((playlist: PlaylistType) => (
                 <option key={playlist.name}>{playlist.name}</option>
               ))}

@@ -1,23 +1,25 @@
 import * as React from 'react';
-import { AuthType, CredentialsType, PlaylistType, SongType } from './types';
+import { AuthType, PlaylistType, SongType } from './types';
 
-export type Context = { auth: AuthType; playlists: Array<PlaylistType>; credentials: CredentialsType };
+export type Context = { auth: AuthType; playlists: Array<PlaylistType> };
 type ProviderProps = { children: React.ReactNode; values: Context };
 type InitListAction = { type: 'initList'; payload: Array<PlaylistType> };
+type RemovePlaylistsAction = { type: 'removePlaylists' };
 type AddListAction = { type: 'addList'; payload: string };
 type RemoveListAction = { type: 'removeList'; payload: string };
 type AuthAction = { type: 'auth'; payload: AuthType };
-type CredentialsAction = { type: 'credentials'; payload: CredentialsType };
+type LogoutAction = { type: 'logout'; payload: Context };
 type AddSongAction = { type: 'addSong'; payload: { name: string; song: SongType } };
 type AddSongNewPlaylistAction = { type: 'addSongNewPlaylist'; payload: { name: string; song: SongType } };
 type RemoveSongAction = { type: 'removeSong'; payload: { name: string; id: string } };
 type RemoveAllSongsAction = { type: 'removeAllSongsFromPlaylist'; payload: string };
 type Action =
   | InitListAction
+  | RemovePlaylistsAction
   | AddListAction
   | RemoveListAction
   | AuthAction
-  | CredentialsAction
+  | LogoutAction
   | AddSongAction
   | AddSongNewPlaylistAction
   | RemoveSongAction
@@ -32,11 +34,15 @@ function contextReducer(context: Context, action: Action) {
     case 'auth': {
       return { ...context, auth: action.payload };
     }
-    case 'credentials': {
-      return { ...context, credentials: action.payload };
+    case 'logout': {
+      return { ...action.payload };
     }
     case 'initList': {
       return { ...context, playlists: action.payload };
+    }
+    case 'removePlaylists': {
+      localStorage.setItem(`${context.auth.userId}-playlists`, JSON.stringify([]));
+      return { ...context, playlists: [] };
     }
     // TODO: remove if not needed
     // case 'addList': {
@@ -125,11 +131,10 @@ function contextReducer(context: Context, action: Action) {
   }
 }
 
-// const initialState: Context = {
-//   auth: { token: '', userId: '', userName: '' },
-//   playlists: [],
-//   credentials: { clientId: '', clientSecret: '' }
-// };
+export const initialState: Context = {
+  auth: { token: '', userId: '', userName: '' },
+  playlists: []
+};
 
 function ContextProvider({ children, values }: ProviderProps) {
   const [context, dispatch] = React.useReducer(contextReducer, values);

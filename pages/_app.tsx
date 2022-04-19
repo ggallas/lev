@@ -1,15 +1,7 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
-import { Context, ContextProvider } from '../src/Context';
-import Layout from '../src/Layout';
-
-// TODO: Add layout and try setting token in context
-
-const initialState: Context = {
-  auth: { token: '', userId: '', userName: '' },
-  playlists: [],
-  credentials: { clientId: '', clientSecret: '' }
-};
+import { ContextProvider, initialState } from '../src/Context';
+import Layout from '../src/components/Layout';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

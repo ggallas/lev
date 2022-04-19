@@ -1,0 +1,21 @@
+.inputContainer {
+  margin: 1rem 0px;
+}
+
+.inputContainer input {
+  text-align: center;
+  width: 9rem;
+}
+
+.inputContainer button {
+  width: 10rem;
+}
+
+.selectContainer select {
+  text-align: center;
+  width: 9rem;
+}
+
+.selectContainer button {
+  width: 10rem;
+}

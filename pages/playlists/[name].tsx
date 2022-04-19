@@ -1,13 +1,12 @@
 import type { NextPage } from 'next';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Song from '../../src/components/Song';
 import { useContext } from '../../src/Context';
 import { PlaylistType, SongType } from '../../src/types';
-import styles from '../styles/Home.module.css';
+import styles from './playlists.module.css';
 
-const Playlists: NextPage = () => {
+const PlaylistDetail: NextPage = () => {
   const router = useRouter();
   const { name } = router.query;
   const [currentPlaylist, setCurrentPlaylist] = useState<PlaylistType>();
@@ -32,24 +31,26 @@ const Playlists: NextPage = () => {
     }
   };
 
+  const hasSongs = currentPlaylist && currentPlaylist.songs.length > 0;
+
   return (
-    <div>
+    <div className={styles.playlist}>
       <h1>Edit your playlist</h1>
-      <h2>Playlist name: {currentPlaylist?.name}</h2>
-      {currentPlaylist && currentPlaylist.songs.length > 0 ? (
-        <ul>
+      <h2>{`Playlist name: ${currentPlaylist?.name}`}</h2>
+      {hasSongs ? (
+        <ul className={styles.songList}>
           {currentPlaylist.songs.map((song: SongType) => (
-            <li key={song.name}>
+            <li className={styles.songItem} key={song.name}>
               <Song song={song} onClick={() => removeSongHandler(song.id)} />
             </li>
           ))}
         </ul>
       ) : (
-        <p>You have no playlists</p>
+        <p>You have no songs in this playlist</p>
       )}
-      <button onClick={removeAllSongsHandler}>Remove all songs</button>
+      {hasSongs && <button onClick={removeAllSongsHandler}>Remove all songs</button>}
     </div>
   );
 };
 
-export default Playlists;
+export default PlaylistDetail;

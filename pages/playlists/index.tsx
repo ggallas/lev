@@ -1,9 +1,8 @@
 import type { NextPage } from 'next';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useContext } from '../../src/Context';
 import { PlaylistType } from '../../src/types';
-import styles from '../styles/Home.module.css';
+import styles from './playlists.module.css';
 
 const Playlists: NextPage = () => {
   const {
@@ -12,24 +11,37 @@ const Playlists: NextPage = () => {
   } = useContext();
 
   const onClickHandler = () => {
-    dispatch({ type: 'initList', payload: [] });
+    dispatch({ type: 'removePlaylists' });
+  };
+
+  const handleRemoveList = (name: string) => {
+    dispatch({ type: 'removeList', payload: name });
   };
 
   return (
-    <div>
+    <div className={styles.playlists}>
       <h1>Manage your playlists</h1>
-      {playlists.length > 0 ? (
-        <ul>
-          {playlists.map((playlist: PlaylistType) => (
-            <li key={playlist.name}>
-              <Link href={`/playlists/${playlist.name}`}>{playlist.name}</Link>
-            </li>
-          ))}
-        </ul>
+      {playlists?.length > 0 ? (
+        <>
+          <ul>
+            {playlists.map((playlist: PlaylistType) => (
+              <li key={playlist.name}>
+                <div className={styles.playlistsItemContainer}>
+                  <div className={styles.playlistsName}>
+                    <Link href={`/playlists/${playlist.name}`}>{playlist.name}</Link>
+                  </div>
+                  <div>
+                    <button onClick={() => handleRemoveList(playlist.name)}>Remove</button>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <button onClick={onClickHandler}>Delete all playlists</button>
+        </>
       ) : (
         <p>You have no playlists</p>
       )}
-      <button onClick={onClickHandler}>Delete all playlists</button>
     </div>
   );
 };
