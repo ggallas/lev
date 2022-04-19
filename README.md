@@ -1,32 +1,48 @@
 ## Getting Started
 
-First, run the development server:
+1. Go to https://developer.spotify.com/dashboard/login, log in and Create an app ([tutorial](https://developer.spotify.com/documentation/general/guides/authorization/app-settings/))
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+2. Edit your app settings:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+   - Webiste: http://localhost:3000
+   - Redirect url: add http://localhost:3000/token
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+3. Set your credentials in the .env.local file.
+   E.g: NEXT_PUBLIC_SPOTIFY_CLIENT_ID = 6a689e50888a404fb9f555166f97434b
+   NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET = cb2681e6aecc46b09cf7711634b3c0bf
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+4. Run npm install
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+5. Run npm run build
 
-## Learn More
+6. Run npm run dev
 
-To learn more about Next.js, take a look at the following resources:
+7. Go to [http://localhost:3000](http://localhost:3000)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Functionality:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+1. Layout: fixed Navbar with nav items + Log out button. Listens for token from global context, searchs for it in the local storage if it doesn't exist and fires getUser request. If getUser response exists, fetch playlist from local storage, if it exists, set it in the global context.
+   If user response is undefined, redirect to login.
 
-## Deploy on Vercel
+2. /home: app information + Get Started button to redirect to login
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. /login: Sign in button initiates Spotify authentication, generates auth Url and pushes.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+4. /token: spotify auth redirects to /token (config in step 2). Server side request using the code query params received from Spotify to get auth_token, store it in localStorage and app global state (Context + Reducer) and redirects to /playing if there is an existing token and userId in global context.
+
+5. /playing: Shows the current playing song, if playing any (fetchs from spotify API). Refetchs new song when actual song finishes (if you change on spotify you must refresh browser).
+   Create new playlist input + Add song to new playlist button.
+   If user already has at least one playlist created, show playlist select + Add song to playlist button.
+   Reducer actions for both buttons. If user tries to add a song to a new playlist but playlist exists, it will be added to the existing playlist.
+   No playlist/song duplicates.
+
+6. /playlists: gets playlists for logged user from global context and renders a list. List item is a link to playlist detail. Button to remove playlist individually, or to remove all playlists.
+
+7. /playlists/{playlistName}: gets playlists from global store and finds the one that matchs the query params. Renders a list with button to remove individually and a button to remove all.
+
+## Todo
+
+1. Refactor Layout component to class component so it can be an error boundary
+2. Improve coverage at least to 90%
+3. Add more styling
+4. Explore NextJS Middlewares so It's possible to change app persistance to depend on cookies instead of localStorage. This way I could implement a few server side rendered pages (couldn't with actual implementation because it's not easy to handle cookies in getServerSideProps without a library)

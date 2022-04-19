@@ -16,7 +16,6 @@ const getAuthUrl = () => {
   return `${authorizationUrl}?${queryParams}`;
 };
 
-// TODO: refresh token - store refresh token in browser and use it to get new accessToken or try closure
 const getToken = async (code: string) => {
   const response = await fetch(tokenUrl, {
     method: 'POST',

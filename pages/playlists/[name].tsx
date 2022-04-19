@@ -9,7 +9,7 @@ import styles from './playlists.module.css';
 const PlaylistDetail: NextPage = () => {
   const router = useRouter();
   const { name } = router.query;
-  const [currentPlaylist, setCurrentPlaylist] = useState<PlaylistType>();
+  const [currentPlaylist, setCurrentPlaylist] = useState<PlaylistType | undefined>(undefined);
   const {
     context: { playlists },
     dispatch

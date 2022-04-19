@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { AuthType, PlaylistType, SongType } from './types';
 
 export type Context = { auth: AuthType; playlists: Array<PlaylistType> };
@@ -30,7 +30,6 @@ const StateContext = React.createContext<{ context: Context; dispatch: Dispatch 
 
 function contextReducer(context: Context, action: Action) {
   switch (action.type) {
-    // TODO: remove token logic if not needed
     case 'auth': {
       return { ...context, auth: action.payload };
     }
@@ -44,16 +43,6 @@ function contextReducer(context: Context, action: Action) {
       localStorage.setItem(`${context.auth.userId}-playlists`, JSON.stringify([]));
       return { ...context, playlists: [] };
     }
-    // TODO: remove if not needed
-    // case 'addList': {
-    //   const newPlaylists = [...context.playlists];
-    //   const playlistExists = newPlaylists.some((playlist: PlaylistType) => playlist.name === action.payload);
-    //   if (playlistExists) return { ...context };
-    //   newPlaylists.push({ name: action.payload, songs: [] });
-    //   localStorage.setItem(`${context.auth.userId}-playlists`, JSON.stringify(newPlaylists));
-    //   console.log('***newPlaylists', newPlaylists);
-    //   return { ...context, playlists: newPlaylists };
-    // }
     case 'removeList': {
       const newPlaylists = [...context.playlists];
       const listIndexToRemove = newPlaylists.findIndex((playlist: PlaylistType) => playlist.name === action.payload);
@@ -152,35 +141,3 @@ function useContext() {
 }
 
 export { ContextProvider, useContext };
-
-// TODO Remove commented code
-// export type Context = { token: string; playlists: Array<PlaylistType> };
-// type ProviderProps = { children: React.ReactNode; initialValue: Context };
-
-// const StateContext = React.createContext<{ playlists: Context; setContext: React.Dispatch<Context> } | undefined>(
-//   undefined
-// );
-
-// const storageToken = localStorage.getItem('token') || '';
-
-// const initialState: Context = {
-//   token: storageToken,
-//   playlists: []
-// };
-
-// function ContextProvider({ children, initialValue }: ProviderProps) {
-//   const [playlists, setContext] = React.useState<Context>(initialValue);
-//   console.log('***playlists provider', playlists);
-//   const value = { playlists, setContext };
-//   return <StateContext.Provider value={value}>{children}</StateContext.Provider>;
-// }
-
-// function useContext() {
-//   const playlists = React.useContext(StateContext);
-//   if (playlists === undefined) {
-//     throw new Error('useContext must be inside a ContextProvider');
-//   }
-//   return playlists;
-// }
-
-// export { ContextProvider, useContext };

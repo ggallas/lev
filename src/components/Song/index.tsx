@@ -33,7 +33,7 @@ const Song = ({ variant = 'list', song, onClick }: SongComponentProps) => {
       <div>
         <h1>Currently playing</h1>
         <h2>{song.artists?.length > 1 ? 'Artists:' : 'Artist'}</h2>
-        {song.artists?.length && song.artists.map((artist: ArtistType) => <p key={artist.id}>{artist.name}</p>)}
+        {song.artists?.length > 0 && song.artists.map((artist: ArtistType) => <p key={artist.id}>{artist.name}</p>)}
         <h2>Song name</h2>
         <p>{song.name}</p>
       </div>

@@ -8,6 +8,7 @@ import { useInputHook } from '../../src/customHooks';
 import Song from '../../src/components/Song';
 import { useRouter } from 'next/router';
 import styles from './playing.module.css';
+import React from 'react';
 
 const initialState: SongType = {
   name: '',
@@ -23,7 +24,7 @@ const Playing: NextPage = () => {
     },
     dispatch
   } = useContext();
-  const [song, setSong] = useState<SongType>(initialState);
+  const [song, setSong] = useState(initialState);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [countdown, setCountdown] = useState(0);
@@ -73,7 +74,7 @@ const Playing: NextPage = () => {
     }
   }, [getCurrentSong, token, router]);
 
-  const handleAddSongNewPlaylist = (event: FormEvent<HTMLFormElement>) => {
+  const handleAddSongNewPlaylist = (event: React.FormEvent) => {
     event.preventDefault();
     dispatch({ type: 'addSongNewPlaylist', payload: { name: playlistInput, song: song } });
     handlePlaylistInputChange('');
@@ -102,6 +103,7 @@ const Playing: NextPage = () => {
             <input
               aria-label="new-playlist"
               placeholder="Create new Playlist"
+              type="text"
               onChange={event => handlePlaylistInputChange(event)}
               value={playlistInput}
             />

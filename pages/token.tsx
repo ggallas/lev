@@ -11,7 +11,7 @@ type TokenPageProps = {
 const Token: NextPage<TokenPageProps> = ({ accessToken }) => {
   const {
     context: {
-      auth: { token }
+      auth: { token, userId }
     },
     dispatch
   } = useContext();
@@ -31,8 +31,8 @@ const Token: NextPage<TokenPageProps> = ({ accessToken }) => {
   }, [accessToken, dispatch]);
 
   useEffect(() => {
-    if (token) router.push('/playing');
-  }, [token, router]);
+    if (token && userId) router.push('/playing');
+  }, [token, router, userId]);
 
   return null;
 };
@@ -43,6 +43,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
     if (ctx.query && 'code' in ctx.query && typeof ctx.query?.code === 'string') {
       code = ctx.query.code;
       const tokenResponse = await Service.getToken(code);
+      console.log('***SSR token', tokenResponse);
       const { access_token } = tokenResponse;
       if (access_token) {
         return {

@@ -1,10 +1,10 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 import Navbar from '../Navbar';
 import { initialState, useContext } from '../../Context';
 import Service from '../../Service';
 import styles from './layout.module.css';
+import { useEffect } from 'react';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -34,7 +34,6 @@ export default function Layout({ children }: LayoutProps) {
             }
             dispatch({ type: 'auth', payload: authObject });
           } else {
-            console.log('***redirect from layout no userResponse');
             router.push('/login');
           }
         };
@@ -48,10 +47,6 @@ export default function Layout({ children }: LayoutProps) {
     dispatch({ type: 'logout', payload: initialState });
     router.push('/login');
   };
-
-  // TODO try app in axe/wave for a11y
-
-  // TODO add to readme: convert layout to class/errorBoundary
 
   return (
     <>
