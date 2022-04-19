@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import Home from '../../pages';
-import { ContextProvider } from '../../src/Context';
+import { ContextProvider } from '../../src/Context/';
 import userEvent from '@testing-library/user-event';
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 import { createMockRouter, emptyState, stateWithUser } from '../../utils/test-utils';

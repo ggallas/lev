@@ -16,6 +16,10 @@
   margin-top: 1rem;
 }
 
+.playlist ul {
+  min-width: 380px;
+}
+
 .playlist li {
   border: 1px solid grey;
   border-bottom: none;

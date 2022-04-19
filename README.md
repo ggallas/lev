@@ -7,8 +7,10 @@
    - Webiste: http://localhost:3000
    - Redirect url: add http://localhost:3000/token
 
-3. Set your credentials in the .env.local file.
-   E.g: NEXT_PUBLIC_SPOTIFY_CLIENT_ID = 6a689e50888a404fb9f555166f97434b
+3. Create .env.local file on the and set your credentials:
+   E.g:
+
+   NEXT_PUBLIC_SPOTIFY_CLIENT_ID = 6a689e50888a404fb9f555166f97434b
    NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET = cb2681e6aecc46b09cf7711634b3c0bf
 
 4. Run npm install
@@ -44,5 +46,6 @@
 
 1. Refactor Layout component to class component so it can be an error boundary
 2. Improve coverage at least to 90%
-3. Add more styling
-4. Explore NextJS Middlewares so It's possible to change app persistance to depend on cookies instead of localStorage. This way I could implement a few server side rendered pages (couldn't with actual implementation because it's not easy to handle cookies in getServerSideProps without a library)
+3. Add more styling (lot more)
+4. Improve readability: E.g: create useLocalStorage hook, extract reducer actions and refactor logic to be more clean.
+5. Explore NextJS Middlewares so it's possible to change app persistance to depend on cookies instead of localStorage. This way I could implement a few server side rendered pages (couldn't with actual implementation because it's not easy to handle cookies in getServerSideProps without a external library)

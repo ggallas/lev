@@ -18,8 +18,6 @@ export default function Layout({ children }: LayoutProps) {
     auth: { token }
   } = context;
 
-  console.log(context);
-
   useEffect(() => {
     if (!token) {
       const authToken = localStorage.getItem('token');

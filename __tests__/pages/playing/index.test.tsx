@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import { ContextProvider } from '../../../src/Context';
+import { ContextProvider } from '../../../src/Context/';
 import userEvent from '@testing-library/user-event';
 import { stateWithPlaylist } from '../../../utils/test-utils';
 import Playing from '../../../pages/playing';

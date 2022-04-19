@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from 'react';
 import Service from '../../src/Service';
 import { PlaylistType, SongType } from '../../src/types';
-import { useContext } from '../../src/Context';
+import { useContext } from '../../src/Context/';
 import { useInputHook } from '../../src/customHooks';
 import Song from '../../src/components/Song';
 import { useRouter } from 'next/router';

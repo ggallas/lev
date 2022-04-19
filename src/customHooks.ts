@@ -1,4 +1,4 @@
-import { ChangeEvent, ClipboardEvent, useState } from 'react';
+import { useState, ClipboardEvent, ChangeEvent } from 'react';
 
 type InputHookProps = {
   validation?: (input: string) => boolean;

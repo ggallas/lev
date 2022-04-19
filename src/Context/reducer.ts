@@ -1,8 +1,6 @@
-import React from 'react';
-import { AuthType, PlaylistType, SongType } from './types';
+import { Context } from '.';
+import { AuthType, PlaylistType, SongType } from '../types';
 
-export type Context = { auth: AuthType; playlists: Array<PlaylistType> };
-type ProviderProps = { children: React.ReactNode; values: Context };
 type InitListAction = { type: 'initList'; payload: Array<PlaylistType> };
 type RemovePlaylistsAction = { type: 'removePlaylists' };
 type AddListAction = { type: 'addList'; payload: string };
@@ -13,7 +11,8 @@ type AddSongAction = { type: 'addSong'; payload: { name: string; song: SongType 
 type AddSongNewPlaylistAction = { type: 'addSongNewPlaylist'; payload: { name: string; song: SongType } };
 type RemoveSongAction = { type: 'removeSong'; payload: { name: string; id: string } };
 type RemoveAllSongsAction = { type: 'removeAllSongsFromPlaylist'; payload: string };
-type Action =
+
+export type Action =
   | InitListAction
   | RemovePlaylistsAction
   | AddListAction
@@ -24,11 +23,8 @@ type Action =
   | AddSongNewPlaylistAction
   | RemoveSongAction
   | RemoveAllSongsAction;
-type Dispatch = (action: Action) => void;
 
-const StateContext = React.createContext<{ context: Context; dispatch: Dispatch } | undefined>(undefined);
-
-function contextReducer(context: Context, action: Action) {
+export function contextReducer(context: Context, action: Action) {
   switch (action.type) {
     case 'auth': {
       return { ...context, auth: action.payload };
@@ -119,25 +115,3 @@ function contextReducer(context: Context, action: Action) {
     }
   }
 }
-
-export const initialState: Context = {
-  auth: { token: '', userId: '', userName: '' },
-  playlists: []
-};
-
-function ContextProvider({ children, values }: ProviderProps) {
-  const [context, dispatch] = React.useReducer(contextReducer, values);
-
-  const value = { context, dispatch };
-  return <StateContext.Provider value={value}>{children}</StateContext.Provider>;
-}
-
-function useContext() {
-  const context = React.useContext(StateContext);
-  if (context === undefined) {
-    throw new Error('useContext must be inside a ContextProvider');
-  }
-  return context;
-}
-
-export { ContextProvider, useContext };

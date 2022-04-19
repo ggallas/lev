@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import { ContextProvider } from '../../../src/Context';
+import { ContextProvider } from '../../../src/Context/';
 import userEvent from '@testing-library/user-event';
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 import { createMockRouter, stateWithPlaylist } from '../../../utils/test-utils';

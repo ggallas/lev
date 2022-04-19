@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useContext } from '../src/Context';
+import { useContext } from '../src/Context/';
 
 const Home: NextPage = () => {
   const {
