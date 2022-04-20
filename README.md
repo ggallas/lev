@@ -7,7 +7,7 @@
    - Webiste: http://localhost:3000
    - Redirect url: add http://localhost:3000/token
 
-3. Create .env.local file on the and set your credentials:
+3. Create .env.local file and set your credentials:
    E.g:
 
    NEXT_PUBLIC_SPOTIFY_CLIENT_ID = 6a689e50888a404fb9f555166f97434b
